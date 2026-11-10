@@ -17,6 +17,7 @@ Preserve bindings and their actions. Keep deployed configuration read-only and r
 - Complete refactors in an isolated worktree before you update the live tree.
 - Suspend automatic reload during a multi-file live update.
 - Reload the complete tree after the update.
+- Update the live tree only after the pushed commit passes CI.
 
 ## Releases
 
@@ -76,10 +77,7 @@ Preserve bindings and their actions. Keep deployed configuration read-only and r
 - Reject process execution while loading the real configuration entry point.
 - Test behavior rather than copied option inventories or source text.
 - Run `just all` before you finish.
-- Add each new check as a `just` recipe.
-- Add the name of each new recipe to `scripts/test.lua`.
-- Use only plain Lua in `scripts/test.lua`. The luacheck and LuaLS configs do not define `vim`.
-- Change `telemetry_version` and `telemetry_commit` in the justfile together.
+- Add each new check as a `just` recipe that `check` runs.
 - Verify real menus, portals and hardware only in an authorized desktop session.
 - Report unavailable checks and uncovered contracts.
 
@@ -104,7 +102,7 @@ Preserve bindings and their actions. Keep deployed configuration read-only and r
 - When you rename a CI artifact, update its dispatch references, dependencies, release gates, required check contexts and badges together.
 - Propagate command failures.
 - Count a missing prerequisite or skipped required coverage as a failure.
-- Run the checks in branch pipelines only. A tag pipeline builds, smoke-tests and publishes the package, and then creates the release.
+- Run the checks in branch and pull request pipelines, never in tag pipelines. A tag pipeline builds, smoke-tests and publishes the package, and then creates the release.
 - Start each release job with a check that the tagged commit is on the default branch.
 - Match release jobs to the tag format of the version, such as `/^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$/`.
 - Protect the release tags. Only protected refs can read the release credentials.
