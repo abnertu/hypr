@@ -2,7 +2,7 @@
 
 Hyprland configuration with Vicinae menus, Noctalia colors, selectable profiles and checked desktop helpers.
 
-[![Validate Desktop Configuration](https://github.com/abnertu/hypr/actions/workflows/validate-desktop-configuration.yml/badge.svg?branch=main)](https://github.com/abnertu/hypr/actions/workflows/validate-desktop-configuration.yml) [![Hyprland](https://img.shields.io/badge/Hyprland-0.55%2B-58E1FF?logo=hyprland&logoColor=white)](https://hypr.land/)
+[![Validate](https://github.com/abnertu/hypr/actions/workflows/validate-desktop-configuration.yml/badge.svg?branch=main)](https://github.com/abnertu/hypr/actions/workflows/validate-desktop-configuration.yml?query=branch%3Amain) [![Hyprland](https://img.shields.io/badge/Hyprland-0.55%2B-58E1FF?logo=hyprland&logoColor=white)](https://hypr.land/)
 
 ## Install
 

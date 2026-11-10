@@ -1,4 +1,4 @@
-name: Validate Desktop Configuration
+name: Validate
 
 on:
   push:
