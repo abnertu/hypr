@@ -4,6 +4,11 @@ Hyprland configuration with Vicinae menus, Noctalia colors, selectable profiles 
 
 [![Validate](https://github.com/abnertu/hypr/actions/workflows/validate-desktop-configuration.yml/badge.svg?branch=main)](https://github.com/abnertu/hypr/actions/workflows/validate-desktop-configuration.yml?query=branch%3Amain) [![Hyprland](https://img.shields.io/badge/Hyprland-0.55%2B-58E1FF?logo=hyprland&logoColor=white)](https://hypr.land/)
 
+![Hyprland desktop with Noctalia](docs/assets/demo.png)
+
+Captured from the current Arch Linux desktop with its wallpaper and Noctalia panels.
+See the [capture sources](docs/assets/demo/README.md).
+
 ## Install
 
 Use Hyprland 0.55+ on Arch Linux. Install these helper dependencies separately:
