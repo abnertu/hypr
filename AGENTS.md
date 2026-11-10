@@ -76,7 +76,8 @@ Preserve bindings and their actions. Keep deployed configuration read-only and r
 - Reject process execution while loading the real configuration entry point.
 - Test behavior rather than copied option inventories or source text.
 - Run `just all` before you finish.
-- Add each new check as a `just` recipe, and add the recipe name to `scripts/test.lua`.
+- Add each new check as a `just` recipe.
+- Add the name of each new recipe to `scripts/test.lua`.
 - Use only plain Lua in `scripts/test.lua`. The luacheck and LuaLS configs do not define `vim`.
 - Change `telemetry_version` and `telemetry_commit` in the justfile together.
 - Verify real menus, portals and hardware only in an authorized desktop session.

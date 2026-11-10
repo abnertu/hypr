@@ -20,7 +20,7 @@ jobs:
     timeout-minutes: 20
     container: archlinux:latest
     steps:
-      - name: Install Lua and Hyprland Validation Tools
+      - name: Install Lua, Neovim and Hyprland Validation Tools
         run: pacman -Syu --noconfirm --needed diffutils git just lua neovim stylua luacheck lua-language-server hyprland python ruff
       - name: Check Out Hyprland Configuration
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

@@ -43,7 +43,7 @@ py-lint:
     {{ quote(ruff) }} format --check tests
 
 # Check annotations against Hyprland's installed stubs.
-typecheck:
+typecheck: deps
     #!/usr/bin/env bash
     set -euo pipefail
     luals="${LUALS:-}"
