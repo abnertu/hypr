@@ -29,7 +29,7 @@ Preserve bindings and their actions. Keep deployed configuration read-only and r
   2. Push the commit to the default branch.
   3. Wait until the branch pipeline of that commit passes.
   4. Tag that commit with an annotated tag: `git tag -a 1.2.3 -m "Release 1.2.3" <commit>`. Tag a release candidate as `1.2.3-rc.1`.
-  5. Push the tag alone: `git push origin 1.2.3`. The tag pipeline publishes the package and creates the release.
+  5. Push the tag alone: `git push origin 1.2.3`. The tag pipeline creates the release and publishes any package.
 - Push the commit and the tag in separate pushes. Do not use `git push --follow-tags`. One push starts two overlapping pipelines, and a single runner queues the tag pipeline.
 
 ## Runtime contracts
@@ -103,7 +103,7 @@ Preserve bindings and their actions. Keep deployed configuration read-only and r
 - When you rename a CI artifact, update its dispatch references, dependencies, release gates, required check contexts and badges together.
 - Propagate command failures.
 - Count a missing prerequisite or skipped required coverage as a failure.
-- Run the checks in branch and pull request pipelines, never in tag pipelines. A tag pipeline builds, smoke-tests and publishes the package, and then creates the release.
+- Run the checks in branch and pull request pipelines, never in tag pipelines. A tag pipeline builds and smoke-tests any package, publishes it, and then creates the release.
 - Start each release job with a check that the tagged commit is on the default branch.
 - Match release jobs to the tag format of the version, such as `/^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$/`.
 - Protect the release tags. Only protected refs can read the release credentials.
