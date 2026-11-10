@@ -1,7 +1,9 @@
 {
   "workspace": {
+    "ignoreDir": [".deps"],
     "library": [
       "${workspaceFolder}/lua",
+      "${workspaceFolder}/.deps/telemetry.lua/lua",
       "/usr/share/hypr/stubs"
     ]
   }

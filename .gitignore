@@ -1,3 +1,4 @@
 monitors.conf
 workspaces.conf
 **/__pycache__/
+.deps/

@@ -5,7 +5,7 @@ Preserve bindings and their actions. Keep deployed configuration read-only and r
 ## Git
 
 - Write commits in [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/) format.
-- Start the type, scope and description in lowercase. Keep the case of code identifiers and proper nouns.
+- Start the type, the scope and the description in lowercase. Keep the case of code identifiers and proper nouns.
 - For a non-trivial change, write a commit body that explains why.
 - Mark a breaking change with `!` and a `BREAKING CHANGE:` footer.
 - Author commits as the user alone. Add no agent trailers or links, such as `Co-Authored-By` or a session URL.
@@ -13,28 +13,23 @@ Preserve bindings and their actions. Keep deployed configuration read-only and r
 - Before you push, squash related commits into one commit to keep the history clean.
 - Push only after the user approves that push.
 - Keep plans, diagnostic logs and throwaway test output outside the repo.
-- Resolve the complete deployment symlink chain before updating a checkout.
-- A Nix store link can point back to a live checkout.
-- Complete refactors in an isolated worktree before updating that live tree.
+- Resolve the complete deployment symlink chain before you update a checkout. A Nix store link can point back to a live checkout.
+- Complete refactors in an isolated worktree before you update the live tree.
 - Suspend automatic reload during a multi-file live update.
 - Reload the complete tree after the update.
 
 ## Releases
 
 - Version releases with [Semantic Versioning 2.0.0](https://semver.org/).
-- Use bare version tags unless the repository already has a prefix.
-- Keep the format of an existing changelog.
-- Use [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/) for a new changelog.
+- Name each release tag with the bare version, such as `1.2.3`. If the repo already uses a tag prefix, such as `v`, keep it.
+- When you create a changelog, use [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/) format. Keep the format of an existing changelog.
 - Release in this order:
-  1. Commit the version files and changelog together, such as `chore(release): prepare 1.2.3`.
-  2. Push that commit to the default branch.
-  3. Wait for that commit's branch checks to pass.
-  4. Create an annotated tag: `git tag -a 1.2.3 -m "Release 1.2.3" <commit>`.
-  5. Push the tag alone: `git push origin 1.2.3`.
-- Use `1.2.3-rc.1` for a release candidate.
-- Let the tag workflow publish the package and create the release.
-- Push the commit and tag separately. Do not use `git push --follow-tags`.
-- Separate pushes prevent overlapping branch and tag workflows from queuing on one runner.
+  1. Update the version files and the changelog in one commit, such as `chore(release): prepare 1.2.3`.
+  2. Push the commit to the default branch.
+  3. Wait until the branch pipeline of that commit passes.
+  4. Tag that commit with an annotated tag: `git tag -a 1.2.3 -m "Release 1.2.3" <commit>`. Tag a release candidate as `1.2.3-rc.1`.
+  5. Push the tag alone: `git push origin 1.2.3`. The tag pipeline publishes the package and creates the release.
+- Push the commit and the tag in separate pushes. Do not use `git push --follow-tags`. One push starts two overlapping pipelines, and a single runner queues the tag pipeline.
 
 ## Runtime contracts
 
@@ -44,8 +39,7 @@ Preserve bindings and their actions. Keep deployed configuration read-only and r
 - Keep Noctalia theme changes in its templates.
 - Write runtime files under `ctx.state_dir`, never under `ctx.config_dir`.
 - Keep helper declarations in TOML and validate them through `hyprconf.config`.
-- The TOML reader supports single-line strings, numbers and booleans. It also reads arrays, tables and array tables.
-- Keep declarations within that subset.
+- Keep TOML declarations within the subset that the reader supports: single-line strings, numbers, booleans, arrays, tables and array tables.
 - Preserve JSON null positions and reject malformed native replies.
 - Keep command execution outside compositor configuration loading.
 - Use the checked process adapter for synchronous native helper operations.
@@ -66,7 +60,7 @@ Preserve bindings and their actions. Keep deployed configuration read-only and r
 - Use the installed Hyprland stubs for annotations.
 - Use `HL.*` types for values passed into Hyprland.
 - Annotate parsed TOML and JSON structures at their consumers.
-- Keep `mouse = true` bind fields despite their absence from `HL.BindOptions`.
+- Keep `mouse = true` bind fields, although `HL.BindOptions` does not declare them.
 - Change those fields only with an intentional binding change.
 
 ## Tests
@@ -82,8 +76,9 @@ Preserve bindings and their actions. Keep deployed configuration read-only and r
 - Reject process execution while loading the real configuration entry point.
 - Test behavior rather than copied option inventories or source text.
 - Run `just all` before you finish.
-- CI runs `just check`, which preserves source formatting.
-- Use `LUA`, `LUALS` and `RUFF` to select validation executables.
+- Add each new check as a `just` recipe, and add the recipe name to `scripts/test.lua`.
+- Use only plain Lua in `scripts/test.lua`. The luacheck and LuaLS configs do not define `vim`.
+- Change `telemetry_version` and `telemetry_commit` in the justfile together.
 - Verify real menus, portals and hardware only in an authorized desktop session.
 - Report unavailable checks and uncovered contracts.
 
@@ -94,54 +89,50 @@ Preserve bindings and their actions. Keep deployed configuration read-only and r
 - Apply the test rules to CI checks too.
 - Run the repo's entry points against real inputs or isolated fixtures.
 - Reject duplicate checks, source-text assertions, copied inventories and checks that only prove that a command or file exists.
+- Name each workflow, job and step by its target and its action.
 - Name CI files in kebab-case by purpose, such as `deploy-production.yml`.
 - Keep reserved host filenames, including `.gitlab-ci.yml`.
 - Name workflows in Title Case, such as `Deploy Production`.
 - Keep the repository name out of workflow names.
 - Name job IDs in snake_case, such as `build_image`.
 - Start each GitHub step name with a verb, such as `Install Dependencies` or `Run Tests`.
-- Preserve proper nouns and code identifiers when applying case.
+- Preserve proper nouns and code identifiers when you apply case.
 - Prefer a specific purpose, such as `deploy-production.yml`, over a vague name, such as `production.yml`.
 - Omit redundant host or artifact words, as in `github-action-build.yml` and `build-workflow.yml`.
-- Name each workflow, job and step by its target and action.
 - Keep job display names unique within the repository.
-- Update dispatch references, dependencies, release gates, required check contexts and badges together when renaming CI artifacts.
+- When you rename a CI artifact, update its dispatch references, dependencies, release gates, required check contexts and badges together.
 - Propagate command failures.
 - Count a missing prerequisite or skipped required coverage as a failure.
-- Run checks in branch workflows. Keep package builds, smoke tests, publication and release creation in tag workflows.
-- Start each release job by checking that its commit belongs to the default branch.
-- Match release jobs to the repository's version tag format, including release candidates.
-- Protect release tags. Allow only protected references to read release credentials.
-- Merge CI changes to the default branch before tagging. A tag workflow uses the tagged commit's configuration.
-- Run checks on `pull_request` and `push` to branches.
-- Run releases in a separate workflow on version-tag pushes, such as `[0-9]+.[0-9]+.[0-9]+` and `[0-9]+.[0-9]+.[0-9]+-*`.
-- Check out release jobs with `fetch-depth: 0` for the default-branch ancestry check.
-- Keep release secrets in an environment limited to release tags. Protect those tags with a tag ruleset.
+- Run the checks in branch pipelines only. A tag pipeline builds, smoke-tests and publishes the package, and then creates the release.
+- Start each release job with a check that the tagged commit is on the default branch.
+- Match release jobs to the tag format of the version, such as `/^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$/`.
+- Protect the release tags. Only protected refs can read the release credentials.
+- A tag pipeline uses the CI config of the tagged commit. Merge a CI change to the default branch before you tag.
+- Run the checks in a workflow on `pull_request` and on `push` to branches.
+- Run the release in a separate workflow on `push` of tags that match the version format. GitHub tag filters are globs, such as `[0-9]+.[0-9]+.[0-9]+` and `[0-9]+.[0-9]+.[0-9]+-*`.
+- Check out release jobs with `fetch-depth: 0`, so that the ancestry check sees the default branch.
+- Keep release secrets in an environment that allows only the release tags. Protect the tags with a tag ruleset.
 - After you change these rules, audit the repo against them.
 - Validate changes locally. Then verify the required CI on the pushed commit.
 - Report each uncovered contract and each unavailable check.
-- Run native Hyprland validation as an unprivileged user.
 
 ## Docs
 
 - Keep each doc concise and plain. Each sentence must carry information.
-- Keep only standing rules in `AGENTS.md`. Each rule must apply to later, unrelated work.
-- Record facts about one place or failure in a code comment, test, commit body, ADR or issue.
+- Write only standing rules in `AGENTS.md`. A standing rule changes how an agent does later, unrelated tasks.
+- Record a fact about one place or one failure at its source: a code comment, a test, a commit body, an ADR or an issue.
+- Keep operator procedures in the README and contributor constraints here.
 - Write English docs in US English, to the [ASD-STE100](https://www.asd-ste100.org/) writing rules:
   - Give one instruction in each sentence.
   - Write instructions in the imperative and in the active voice.
   - Use one word for one meaning, and one meaning for one word.
   - An instruction has 20 words or fewer. A description has 25 words or fewer.
-- Review each sentence over these limits.
-- Split a sentence if it holds more than one instruction or fact.
+- Review each sentence over these limits. Split it if it holds more than one instruction or fact.
 - Use a numbered list for three or more instructions in a fixed order, also across sentences.
-- Write full-sentence items or sets with more than five items as bullet lists.
-- Other sets can stay in one sentence, even above the word limits.
+- Write a set of full-sentence items, or of more than five items, as a bullet list. Otherwise, the set can stay in one sentence, even when the sentence is over the limits.
 - Write a non-English doc in two passes:
   1. Write an English draft to these rules.
   2. Translate the draft:
      1. Keep its sentence boundaries and one term for each concept.
      2. Keep commands, paths and code unchanged.
-     3. Use the target language's natural word order.
-- Read [README.md](README.md) before you change deployment, configuration or state recovery.
-- Keep operator procedures in the README and contributor constraints here.
+     3. Use the natural word order of the target language.

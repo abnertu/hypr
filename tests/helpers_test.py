@@ -11,6 +11,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
+import telemetry_events
+
 REPOSITORY = Path(__file__).resolve().parents[1]
 
 
@@ -382,4 +384,4 @@ assert(result.stdout=='partial' and result.stderr=='diagnostic')
 
 
 if __name__ == "__main__":
-    unittest.main()
+    telemetry_events.main()

@@ -2,12 +2,30 @@ set shell := ["bash", "-euo", "pipefail", "-c"]
 
 lua := env("LUA", "lua")
 ruff := env("RUFF", "ruff")
+telemetry_version := "0.1.0"
+telemetry_commit := "f5d4e6dccc596a1c0968077c33ad0365fc24d1dd"
 
 # Format Lua, then run every validation check.
 all: fmt check
 
 # Run the same checks as CI without changing formatting.
-check: fmt-check lint py-lint typecheck keymap config test helpers data profiles
+check: deps
+    nvim --headless --clean -l scripts/test.lua
+
+# Fetch the pinned telemetry release that runs the checks.
+deps:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    target=.deps/telemetry.lua
+    if [[ ! -d "$target" ]]; then
+        git -c advice.detachedHead=false clone --quiet --depth 1 --branch {{ telemetry_version }} \
+            https://github.com/Orbit-Lua/telemetry.lua.git "$target"
+    fi
+    actual=$(git -C "$target" rev-parse HEAD)
+    if [[ "$actual" != {{ telemetry_commit }} ]]; then
+        echo "$target is at $actual, not telemetry {{ telemetry_version }}. Remove it and rerun." >&2
+        exit 1
+    fi
 
 # Rewrite Lua and Python formatting.
 fmt: (_lua-check "stylua")
